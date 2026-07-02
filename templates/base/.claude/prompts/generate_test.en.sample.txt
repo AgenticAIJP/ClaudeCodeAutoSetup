@@ -1,0 +1,21 @@
+# How to use generate_test.txt (guide for humans)
+
+A template for asking Claude to write tests.
+
+## Why use a template
+
+Ask just "write tests" and Claude tends to produce shallow
+happy-path-only tests. Specifying edge cases and error handling
+produces tests that actually catch bugs.
+
+## How to use
+
+1. Copy generate_test.txt
+2. Write the target file/function after "Target:"
+3. Paste into the chat
+
+## Why tests matter extra in AI development
+
+When you hand Claude a large change, existing tests mean
+"if it breaks, you know immediately" — you can delegate safely.
+Tests are the safety net of the AI era (AI TDD).

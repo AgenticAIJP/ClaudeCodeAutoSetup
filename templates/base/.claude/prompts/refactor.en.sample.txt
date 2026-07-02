@@ -1,0 +1,22 @@
+# What prompts/ is (guide for humans)
+
+The neighboring refactor.txt is a template for frequently used instructions.
+
+## Difference from commands/
+
+- .claude/commands/refactor.md → registered as "/refactor" in Claude Code
+- .claude/prompts/refactor.txt → copy-paste material for the chat
+
+Use commands/ for things you run often; prompts/ for occasional or tweaked use.
+
+## How to use
+
+1. Copy the contents of refactor.txt
+2. Add the target file or function after "Target:"
+3. Paste into the Claude Code chat
+
+## Why it helps
+
+Writing instructions from scratch every time, you forget constraints
+(test-first, small steps, ...) and get sloppy refactors.
+A template keeps the quality consistent.

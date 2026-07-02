@@ -1,29 +1,33 @@
 # ClaudeCodeAutoSetup
 
-> Claude Code プロジェクトを、コマンド一発で正しく始める。
-> 迷わない。シンプル。クリーン。
+**English** | [日本語](README.ja.md)
 
-Claude Code に最適なディレクトリ構造・設定ファイル一式を自動生成するツールです。
-すべての設定ファイルの**隣に人間向けの解説(`*.sample.md`)** が付くので、
-「このファイルは何のためにあるのか」を探し回る必要がありません。
+> Start your Claude Code project right, with one command.
+> No confusion. Simple. Clean.
 
-🌐 学習サイト: [code.jp.ai](https://code.jp.ai)(準備中)
-📦 完全オープンソース・非営利・MIT License
+A tool that generates the ideal directory structure and config files for Claude Code.
+Every config file ships with **human-readable documentation right next to it**
+(`*.en.sample.md` / `*.ja.sample.md`), so you never hunt around wondering
+"what is this file even for?"
 
-## 使い方
+🌐 Learning site: [code.jp.ai](https://code.jp.ai) (coming soon)
+📦 Fully open source · non-profit · MIT License · 日本語 / English
 
-### 一番かんたんな方法(クローン不要)
+## Usage
+
+### The easiest way (no clone needed)
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/AgenticAIJP/ClaudeCodeAutoSetup/main/setup.sh | bash
 ```
 
-質問は2つだけ:
+Only three questions:
 
-1. プロジェクトのタイプ(1〜6 の番号)
-2. プロジェクト名
+1. Language — 日本語 / English
+2. Project type (a number from 1 to 6)
+3. Project name
 
-### クローンして使う
+### Clone and run
 
 ```bash
 git clone https://github.com/AgenticAIJP/ClaudeCodeAutoSetup.git
@@ -31,70 +35,78 @@ cd ClaudeCodeAutoSetup
 ./setup.sh
 ```
 
-### 非対話モード(スクリプト・CI 用)
+### Non-interactive mode (scripts / CI)
 
 ```bash
-./setup.sh 3 my-api-project   # タイプ3(API)で my-api-project を生成
+./setup.sh 3 my-api-project en   # type 3 (API), English project files
+./setup.sh 5 my-agent ja        # type 5 (AI Agent), Japanese project files
 ```
 
-## 6つのプロジェクトタイプ
+## Six project types
 
-| # | タイプ | 向いているもの | 特徴的な構造 |
-|---|--------|--------------|-------------|
-| 1 | 汎用ベース | まず迷ったらこれ | `src/ tests/ docs/ tasks/` |
-| 2 | Webアプリ型 | 前後端分離のWebアプリ | `frontend/ backend/` |
-| 3 | APIサービス型 | バックエンド・マイクロサービス | `routes/ services/ models/` + API仕様書 |
-| 4 | CLIツール型 | コマンドラインツール | `commands/ handlers/` |
-| 5 | AI Agent型 | MCP・自動化プロジェクト | `agents/ skills/ tools/` + MCP設定例 |
-| 6 | ドキュメント型 | 学習サイト・技術ブログ | `docs/ examples/ templates/` + 記事雛形 |
+| # | Type | Best for | Signature structure |
+|---|------|----------|---------------------|
+| 1 | Generic base | when in doubt, start here | `src/ tests/ docs/ tasks/` |
+| 2 | Web app | split frontend/backend apps | `frontend/ backend/` |
+| 3 | API service | backends & microservices | `routes/ services/ models/` + API spec |
+| 4 | CLI tool | command-line tools | `commands/ handlers/` |
+| 5 | AI Agent | MCP & automation projects | `agents/ skills/ tools/` + MCP samples |
+| 6 | Documentation | learning sites & tech blogs | `docs/ examples/ templates/` + boilerplate |
 
-## 生成されるもの(汎用ベースの例)
+## What gets generated (generic base example)
 
 ```
 my-project/
-├── CLAUDE.md                        # Claude への「プロジェクト説明書」(最重要)
+├── CLAUDE.md                        # Claude's "project briefing" (most important)
 ├── .claude/
-│   ├── settings.json                # 権限・フック設定(解説: settings.sample.md)
-│   ├── rules/                       # アーキテクチャ・コーディング規約
-│   │   ├── architecture.md          #   ← Claude が読む
-│   │   └── architecture.sample.md   #   ← あなたが読む(なぜ・使い方・効果)
-│   ├── commands/                    # /refactor /review カスタムコマンド
-│   ├── hooks/                       # 危険コマンドのブロック・自動フォーマット
-│   ├── prompts/                     # コピペ用プロンプトテンプレート
-│   └── memory.md                    # セッションをまたぐ動的コンテキスト
-├── .mcp.sample.json                 # MCP サーバー設定例(GitHub / DB など)
+│   ├── settings.json                # permissions & hooks (docs: settings.en.sample.md)
+│   ├── rules/                       # architecture & coding style rules
+│   │   ├── architecture.md          #   ← Claude reads this
+│   │   ├── architecture.en.sample.md#   ← you read this (why, how, effects)
+│   │   └── architecture.ja.sample.md#   ← Japanese teammates read this
+│   ├── commands/                    # /refactor /review custom commands
+│   ├── hooks/                       # dangerous-command blocking, auto-format
+│   ├── prompts/                     # copy-paste prompt templates
+│   └── memory.md                    # dynamic context across sessions
+├── .mcp.sample.json                 # MCP server examples (GitHub / DB / ...)
 ├── docs/  src/  tests/  scripts/
-└── tasks/                           # todo.md(計画) / lessons.md(失敗の記録)
+└── tasks/                           # todo.md (plans) / lessons.md (mistakes log)
 ```
 
-## 設計哲学: `*.sample.md` 命名規則
+## How the bilingual layout works
+
+- **Files Claude reads** (CLAUDE.md, rules, commands...) are generated in **one language** —
+  the one you pick at setup. This keeps Claude's context clean and single-language.
+- **Files humans read** (`*.sample.*`) ship in **both languages, side by side**,
+  so English-speaking and Japanese-speaking teammates each find their explanation
+  exactly where the confusion happens:
 
 ```
-.claude/rules/architecture.md          ← Claude が読む。シンプルなルールのみ
-.claude/rules/architecture.sample.md   ← 人間が読む。なぜ・どう使うか・効果の例
+.claude/rules/architecture.md              ← Claude reads (the rules themselves)
+.claude/rules/architecture.en.sample.md    ← English guide
+.claude/rules/architecture.ja.sample.md    ← 日本語の解説
 ```
 
-- **困った場所の隣に答えがある** — README を探し回る時間はゼロ
-- sample ファイルは `settings.json` の `permissions.deny` で除外済み — Claude のコンテキストを消費しない
-- すべての解説は「書いた場合 / 書かない場合」の Before / After 形式
+Sample files are excluded from Claude's view via `permissions.deny` →
+`Read(./**/*.sample.*)`, so they cost zero context.
 
-## よくある質問
+## FAQ
 
-**Q. 公式の `/init` と何が違う?**
-`/init` は既存コードから CLAUDE.md を1枚生成します。本ツールは rules / hooks /
-commands / タスク管理まで含む「開発体制ごと」の骨格を、解説付きで生成します。
-併用がおすすめ: 本ツールで骨格を作り、`/init` で CLAUDE.md を育てる。
+**Q. How is this different from the official `/init`?**
+`/init` generates a single CLAUDE.md from existing code. This tool generates the
+whole development scaffold — rules, hooks, commands, task management — with
+documentation attached. Use both: scaffold with this tool, grow CLAUDE.md with `/init`.
 
-**Q. 生成後にタイプを変えたくなったら?**
-`.claude/rules/` に他タイプのルールを足すだけです。構造は自由に育ててください。
+**Q. What if I want to change the type later?**
+Just add another type's rules under `.claude/rules/`. The structure is yours to grow.
 
-**Q. Windows では使える?**
-Git Bash または WSL 上で動作します。
+**Q. Does it work on Windows?**
+Yes, under Git Bash or WSL.
 
-## コントリビュート
+## Contributing
 
-Issue / PR 歓迎です。このプロジェクトは完全非営利で、寄付も受け付けていません。
-Claude Code のエコシステムが強くなるほど、みんなが得をする——それだけです。
+Issues and PRs welcome. This project is fully non-profit and accepts no donations.
+The stronger the Claude Code ecosystem gets, the more everyone wins — that's the whole idea.
 
 ## License
 

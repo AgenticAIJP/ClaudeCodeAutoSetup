@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" data-lang="ja">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ClaudeCodeAutoSetup — Claude Code プロジェクトを一発生成</title>
-<meta name="description" content="Claude Code の最適なプロジェクト構造を、コマンド一発で生成。各ファイルの隣に解説付き。迷わない、シンプル、クリーン。">
+<title>ClaudeCodeAutoSetup — Claude Code プロジェクトを一発生成 / One-command Claude Code project generator</title>
+<meta name="description" content="Claude Code の最適なプロジェクト構造を、コマンド一発で生成。/ Generate the ideal Claude Code project structure with one command. Docs next to every config file.">
 <style>
   :root {
     --bg: #0f1117;
@@ -21,11 +21,27 @@
   body {
     background: var(--bg);
     color: var(--text);
-    font-family: "Hiragino Sans", "Yu Gothic UI", "Noto Sans JP", sans-serif;
+    font-family: "Hiragino Sans", "Yu Gothic UI", "Noto Sans JP", -apple-system, "Segoe UI", sans-serif;
     line-height: 1.8;
   }
   .container { max-width: 880px; margin: 0 auto; padding: 0 24px; }
   code, pre { font-family: "SF Mono", Menlo, Consolas, monospace; }
+
+  /* Language visibility */
+  html[data-lang="ja"] .l-en { display: none !important; }
+  html[data-lang="en"] .l-ja { display: none !important; }
+
+  /* Language switcher */
+  .lang-switch {
+    position: fixed; top: 16px; right: 16px; z-index: 10;
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 10px; overflow: hidden; display: flex;
+  }
+  .lang-switch button {
+    background: none; border: none; color: var(--text-dim);
+    padding: 7px 16px; font-size: 13px; cursor: pointer; font-weight: 700;
+  }
+  .lang-switch button.active { background: var(--accent); color: #fff; }
 
   /* Hero */
   .hero { text-align: center; padding: 88px 0 56px; }
@@ -125,43 +141,64 @@
 </head>
 <body>
 
+<div class="lang-switch" role="group" aria-label="Language">
+  <button id="btn-ja" onclick="setLang('ja')">日本語</button>
+  <button id="btn-en" onclick="setLang('en')">EN</button>
+</div>
+
 <header class="hero container">
   <div class="logo">CODE.JP.AI</div>
-  <h1>Claude Code プロジェクトを<br><span class="em">コマンド一発</span>で正しく始める</h1>
-  <p class="tagline">迷わない。シンプル。クリーン。<br>最適なディレクトリ構造と設定ファイル一式を、解説付きで自動生成します。</p>
+  <h1 class="l-ja">Claude Code プロジェクトを<br><span class="em">コマンド一発</span>で正しく始める</h1>
+  <h1 class="l-en">Start your Claude Code project<br><span class="em">right, with one command</span></h1>
+  <p class="tagline l-ja">迷わない。シンプル。クリーン。<br>最適なディレクトリ構造と設定ファイル一式を、解説付きで自動生成します。</p>
+  <p class="tagline l-en">No confusion. Simple. Clean.<br>Generates the ideal directory structure and config files — with documentation built in.</p>
 
   <div class="install">
-    <div class="label">ターミナルに貼り付けるだけ:</div>
+    <div class="label l-ja">ターミナルに貼り付けるだけ:</div>
+    <div class="label l-en">Just paste into your terminal:</div>
     <pre id="install-cmd">curl -fsSL https://raw.githubusercontent.com/AgenticAIJP/ClaudeCodeAutoSetup/main/setup.sh | bash</pre>
-    <button class="copy-btn" onclick="copyCmd()">コピー</button>
+    <button class="copy-btn" onclick="copyCmd()"><span class="l-ja">コピー</span><span class="l-en">Copy</span></button>
   </div>
 
-  <div class="badges">
+  <div class="badges l-ja">
     <span>✅ 完全オープンソース (MIT)</span>
     <span>💰 非営利・広告なし</span>
-    <span>📦 v1.0.0</span>
+    <span>🌏 日本語 / English</span>
+  </div>
+  <div class="badges l-en">
+    <span>✅ Fully open source (MIT)</span>
+    <span>💰 Non-profit, no ads</span>
+    <span>🌏 日本語 / English</span>
   </div>
 </header>
 
 <section>
   <div class="container">
-    <h2>使い方は3ステップ</h2>
-    <p class="section-lead">Node.js も npm も不要。bash と curl があれば動きます。</p>
+    <h2 class="l-ja">使い方は3ステップ</h2>
+    <h2 class="l-en">Three steps</h2>
+    <p class="section-lead l-ja">Node.js も npm も不要。bash と curl があれば動きます。</p>
+    <p class="section-lead l-en">No Node.js, no npm. Just bash and curl.</p>
     <div class="steps">
       <div class="step">
         <div class="num">STEP 1</div>
-        <h3>コマンドを実行</h3>
-        <p>上のコマンドをターミナルに貼り付けて Enter。</p>
+        <h3 class="l-ja">コマンドを実行</h3>
+        <h3 class="l-en">Run the command</h3>
+        <p class="l-ja">上のコマンドをターミナルに貼り付けて Enter。言語(日本語/English)を選択。</p>
+        <p class="l-en">Paste the command above and hit Enter. Pick your language (日本語/English).</p>
       </div>
       <div class="step">
         <div class="num">STEP 2</div>
-        <h3>タイプと名前を選ぶ</h3>
-        <p>6種類から番号を選んで、プロジェクト名を入力するだけ。</p>
+        <h3 class="l-ja">タイプと名前を選ぶ</h3>
+        <h3 class="l-en">Pick a type and name</h3>
+        <p class="l-ja">6種類から番号を選んで、プロジェクト名を入力するだけ。</p>
+        <p class="l-en">Choose one of six types, type a project name — that's it.</p>
       </div>
       <div class="step">
         <div class="num">STEP 3</div>
-        <h3>claude を起動</h3>
-        <p>CLAUDE.md の TODO を3箇所埋めたら、もう開発を始められます。</p>
+        <h3 class="l-ja">claude を起動</h3>
+        <h3 class="l-en">Launch claude</h3>
+        <p class="l-ja">CLAUDE.md の TODO を3箇所埋めたら、もう開発を始められます。</p>
+        <p class="l-en">Fill in three TODOs in CLAUDE.md and you're ready to build.</p>
       </div>
     </div>
   </div>
@@ -169,36 +206,67 @@
 
 <section>
   <div class="container">
-    <h2>6つのプロジェクトタイプ</h2>
-    <p class="section-lead">用途に合わせて、最適な構造とルールが生成されます。</p>
+    <h2 class="l-ja">6つのプロジェクトタイプ</h2>
+    <h2 class="l-en">Six project types</h2>
+    <p class="section-lead l-ja">用途に合わせて、最適な構造とルールが生成されます。</p>
+    <p class="section-lead l-en">Each generates the right structure and rules for the job.</p>
     <div class="types">
-      <div class="type"><div class="icon">🧱</div><h3>汎用ベース</h3><p>まずはこれ。最小のきれいな骨格。</p><code>src/ tests/ docs/ tasks/</code></div>
-      <div class="type"><div class="icon">🌐</div><h3>Webアプリ型</h3><p>前後端分離。API境界のルール付き。</p><code>frontend/ backend/</code></div>
-      <div class="type"><div class="icon">🔌</div><h3>APIサービス型</h3><p>仕様書の自動更新ルールが特徴。</p><code>routes/ services/ models/</code></div>
-      <div class="type"><div class="icon">⌨️</div><h3>CLIツール型</h3><p>stdout/stderr 分離・終了コード規約。</p><code>commands/ handlers/</code></div>
-      <div class="type"><div class="icon">🤖</div><h3>AI Agent型</h3><p>MCP設定例つき。1エージェント1責務。</p><code>agents/ skills/ tools/</code></div>
-      <div class="type"><div class="icon">📚</div><h3>ドキュメント型</h3><p>学習サイト・技術ブログ。記事雛形つき。</p><code>docs/ examples/ templates/</code></div>
+      <div class="type"><div class="icon">🧱</div>
+        <h3 class="l-ja">汎用ベース</h3><h3 class="l-en">Generic base</h3>
+        <p class="l-ja">まずはこれ。最小のきれいな骨格。</p><p class="l-en">Start here. A minimal, clean skeleton.</p>
+        <code>src/ tests/ docs/ tasks/</code></div>
+      <div class="type"><div class="icon">🌐</div>
+        <h3 class="l-ja">Webアプリ型</h3><h3 class="l-en">Web app</h3>
+        <p class="l-ja">前後端分離。API境界のルール付き。</p><p class="l-en">Split front/back, with API-boundary rules.</p>
+        <code>frontend/ backend/</code></div>
+      <div class="type"><div class="icon">🔌</div>
+        <h3 class="l-ja">APIサービス型</h3><h3 class="l-en">API service</h3>
+        <p class="l-ja">仕様書の自動更新ルールが特徴。</p><p class="l-en">Specs kept in sync with the code, by rule.</p>
+        <code>routes/ services/ models/</code></div>
+      <div class="type"><div class="icon">⌨️</div>
+        <h3 class="l-ja">CLIツール型</h3><h3 class="l-en">CLI tool</h3>
+        <p class="l-ja">stdout/stderr 分離・終了コード規約。</p><p class="l-en">stdout/stderr discipline, exit-code rules.</p>
+        <code>commands/ handlers/</code></div>
+      <div class="type"><div class="icon">🤖</div>
+        <h3 class="l-ja">AI Agent型</h3><h3 class="l-en">AI Agent</h3>
+        <p class="l-ja">MCP設定例つき。1エージェント1責務。</p><p class="l-en">MCP config samples. One agent, one job.</p>
+        <code>agents/ skills/ tools/</code></div>
+      <div class="type"><div class="icon">📚</div>
+        <h3 class="l-ja">ドキュメント型</h3><h3 class="l-en">Documentation</h3>
+        <p class="l-ja">学習サイト・技術ブログ。記事雛形つき。</p><p class="l-en">Learning sites and blogs, with article boilerplate.</p>
+        <code>docs/ examples/ templates/</code></div>
     </div>
   </div>
 </section>
 
 <section>
   <div class="container">
-    <h2>設計哲学: 困った場所の隣に、答えがある</h2>
-    <p class="section-lead">すべての設定ファイルの隣に <code>*.sample.md</code>(人間向け解説)がペアで置かれます。README を探し回る時間はゼロ。</p>
+    <h2 class="l-ja">設計哲学: 困った場所の隣に、答えがある</h2>
+    <h2 class="l-en">Design philosophy: the answer sits next to the question</h2>
+    <p class="section-lead l-ja">すべての設定ファイルの隣に、日英それぞれの解説(<code>*.ja.sample.md</code> / <code>*.en.sample.md</code>)がペアで置かれます。README を探し回る時間はゼロ。</p>
+    <p class="section-lead l-en">Every config file ships with documentation right next to it, in both languages (<code>*.ja.sample.md</code> / <code>*.en.sample.md</code>). Zero time spent hunting through READMEs.</p>
     <div class="pair">
-<pre><span class="c-dim">.claude/rules/</span>
-<span class="c-claude">├── architecture.md          ← Claude が読む(ルール本体)</span>
-<span class="c-human">└── architecture.sample.md   ← あなたが読む(なぜ・使い方・効果)</span></pre>
+<pre class="l-ja"><span class="c-dim">.claude/rules/</span>
+<span class="c-claude">├── architecture.md              ← Claude が読む(ルール本体)</span>
+<span class="c-human">├── architecture.ja.sample.md    ← あなたが読む(日本語解説)</span>
+<span class="c-human">└── architecture.en.sample.md    ← 英語話者のチームメイトが読む</span></pre>
+<pre class="l-en"><span class="c-dim">.claude/rules/</span>
+<span class="c-claude">├── architecture.md              ← Claude reads this (the rules)</span>
+<span class="c-human">├── architecture.en.sample.md    ← you read this (why, how, effects)</span>
+<span class="c-human">└── architecture.ja.sample.md    ← your Japanese teammates read this</span></pre>
     </div>
     <div class="ba">
       <div class="box good">
-        <h4>✅ ルールを書いた場合</h4>
-        <p>Claude はビジネスロジックを core 層に置き、アーキテクチャを守る。仕様書も同じ変更で更新される。</p>
+        <h4 class="l-ja">✅ ルールを書いた場合</h4>
+        <h4 class="l-en">✅ With rules</h4>
+        <p class="l-ja">Claude はビジネスロジックを core 層に置き、アーキテクチャを守る。仕様書も同じ変更で更新される。</p>
+        <p class="l-en">Claude keeps business logic in the core layer and respects the architecture. Specs get updated in the same change.</p>
       </div>
       <div class="box bad">
-        <h4>❌ 書かなかった場合</h4>
-        <p>Claude は最短経路でコードを書く。3回の機能追加で main が500行になり、構造が崩壊する。</p>
+        <h4 class="l-ja">❌ 書かなかった場合</h4>
+        <h4 class="l-en">❌ Without rules</h4>
+        <p class="l-ja">Claude は最短経路でコードを書く。3回の機能追加で main が500行になり、構造が崩壊する。</p>
+        <p class="l-en">Claude takes the shortest path. Three features later, main is 500 lines and the architecture has collapsed.</p>
       </div>
     </div>
   </div>
@@ -206,42 +274,68 @@
 
 <section>
   <div class="container">
-    <h2>学習ロードマップ</h2>
-    <p class="section-lead">自分のレベルを選んで、そこから始めてください。</p>
+    <h2 class="l-ja">学習ロードマップ</h2>
+    <h2 class="l-en">Learning roadmap</h2>
+    <p class="section-lead l-ja">自分のレベルを選んで、そこから始めてください。</p>
+    <p class="section-lead l-en">Pick your level and start there.</p>
 
     <div class="level">
       <span class="tag">Level 1</span>
-      <h3>概念理解 — 読むだけ</h3>
-      <div class="time">⏱ 約30分</div>
-      <ul>
+      <h3 class="l-ja">概念理解 — 読むだけ</h3>
+      <h3 class="l-en">Concepts — just read</h3>
+      <div class="time l-ja">⏱ 約30分</div>
+      <div class="time l-en">⏱ ~30 minutes</div>
+      <ul class="l-ja">
         <li>Claude Code とは何か / 通常の Claude との違い</li>
         <li>CLAUDE.md の役割と書き方の基本</li>
         <li>プロジェクト構造がなぜ重要か(Before / After)</li>
         <li><code>/init</code> コマンドで CLAUDE.md を自動生成する方法</li>
       </ul>
+      <ul class="l-en">
+        <li>What Claude Code is / how it differs from regular Claude</li>
+        <li>What CLAUDE.md does and how to write one</li>
+        <li>Why project structure matters (Before / After)</li>
+        <li>Auto-generating CLAUDE.md with <code>/init</code></li>
+      </ul>
     </div>
 
     <div class="level">
       <span class="tag">Level 2</span>
-      <h3>実戦設定 — 手を動かす</h3>
-      <div class="time">⏱ 1〜2時間</div>
-      <ul>
+      <h3 class="l-ja">実戦設定 — 手を動かす</h3>
+      <h3 class="l-en">Hands-on setup</h3>
+      <div class="time l-ja">⏱ 1〜2時間</div>
+      <div class="time l-en">⏱ 1-2 hours</div>
+      <ul class="l-ja">
         <li>settings.json(permissions / hooks)の設定</li>
         <li>カスタムスラッシュコマンドの作り方(.claude/commands/)</li>
         <li>Hooks の設定(PreToolUse / PostToolUse / Stop)</li>
         <li>CLAUDE.md の三層階層(グローバル / プロジェクト / サブディレクトリ)</li>
       </ul>
+      <ul class="l-en">
+        <li>Configuring settings.json (permissions / hooks)</li>
+        <li>Building custom slash commands (.claude/commands/)</li>
+        <li>Setting up hooks (PreToolUse / PostToolUse / Stop)</li>
+        <li>The three-layer CLAUDE.md hierarchy (global / project / subdirectory)</li>
+      </ul>
     </div>
 
     <div class="level">
       <span class="tag">Level 3</span>
-      <h3>高度な活用 — 本番レベル</h3>
-      <div class="time">⏱ チーム・本番運用</div>
-      <ul>
+      <h3 class="l-ja">高度な活用 — 本番レベル</h3>
+      <h3 class="l-en">Advanced — production level</h3>
+      <div class="time l-ja">⏱ チーム・本番運用</div>
+      <div class="time l-en">⏱ teams & production</div>
+      <ul class="l-ja">
         <li>MCP サーバーの接続(GitHub / DB / Slack)</li>
         <li>Multi-agent 協調(Claude が Claude を呼び出す)</li>
         <li>大規模プロジェクトでのコンテキスト管理戦略</li>
         <li>カスタム MCP サーバーの自作</li>
+      </ul>
+      <ul class="l-en">
+        <li>Connecting MCP servers (GitHub / DB / Slack)</li>
+        <li>Multi-agent orchestration (Claude calling Claude)</li>
+        <li>Context-management strategies for large projects</li>
+        <li>Building your own MCP server</li>
       </ul>
     </div>
   </div>
@@ -249,31 +343,49 @@
 
 <section>
   <div class="container res">
-    <h2>公式学習リソース</h2>
-    <p class="section-lead">このサイトの役割は「どこから学ぶか迷わせない」こと。詳細は公式へ。</p>
-    <ul>
+    <h2 class="l-ja">公式学習リソース</h2>
+    <h2 class="l-en">Official resources</h2>
+    <p class="section-lead l-ja">このサイトの役割は「どこから学ぶか迷わせない」こと。詳細は公式へ。</p>
+    <p class="section-lead l-en">This site's job is to point you to the right starting place. The details live in the official docs.</p>
+    <ul class="l-ja">
       <li>📖 <a href="https://code.claude.com/docs/ja/overview" target="_blank" rel="noopener">Claude Code 公式ドキュメント(日本語)</a> — コマンド・設定リファレンス</li>
       <li>🎓 <a href="https://anthropic.skilljar.com/" target="_blank" rel="noopener">Anthropic 公式コース</a> — Claude Code の体系的な学習</li>
       <li>🛠 <a href="https://github.com/AgenticAIJP/ClaudeCodeAutoSetup" target="_blank" rel="noopener">GitHub — ClaudeCodeAutoSetup</a> — 本プロジェクトのテンプレート & CHANGELOG</li>
     </ul>
+    <ul class="l-en">
+      <li>📖 <a href="https://code.claude.com/docs/en/overview" target="_blank" rel="noopener">Claude Code official docs</a> — command & settings reference</li>
+      <li>🎓 <a href="https://anthropic.skilljar.com/" target="_blank" rel="noopener">Anthropic official courses</a> — structured Claude Code learning</li>
+      <li>🛠 <a href="https://github.com/AgenticAIJP/ClaudeCodeAutoSetup" target="_blank" rel="noopener">GitHub — ClaudeCodeAutoSetup</a> — templates & CHANGELOG</li>
+    </ul>
     <p style="margin-top:28px; text-align:center;">
-      <a class="gh-btn" href="https://github.com/AgenticAIJP/ClaudeCodeAutoSetup" target="_blank" rel="noopener">GitHub で見る →</a>
+      <a class="gh-btn" href="https://github.com/AgenticAIJP/ClaudeCodeAutoSetup" target="_blank" rel="noopener"><span class="l-ja">GitHub で見る →</span><span class="l-en">View on GitHub →</span></a>
     </p>
   </div>
 </section>
 
 <footer>
-  <p>「自分が必要だから作る。作ったものがみんなの役に立つ。」</p>
-  <p style="margin-top:8px;">MIT License · <a href="https://github.com/AgenticAIJP/ClaudeCodeAutoSetup">AgenticAIJP/ClaudeCodeAutoSetup</a> · 非営利・寄付も受け付けていません</p>
+  <p class="l-ja">「自分が必要だから作る。作ったものがみんなの役に立つ。」</p>
+  <p class="l-en">"Built because I needed it. Shared because it might help you."</p>
+  <p style="margin-top:8px;">MIT License · <a href="https://github.com/AgenticAIJP/ClaudeCodeAutoSetup">AgenticAIJP/ClaudeCodeAutoSetup</a> · <span class="l-ja">非営利・寄付も受け付けていません</span><span class="l-en">non-profit, no donations accepted</span></p>
 </footer>
 
 <script>
+function setLang(lang) {
+  document.documentElement.setAttribute('data-lang', lang);
+  document.documentElement.setAttribute('lang', lang);
+  document.getElementById('btn-ja').classList.toggle('active', lang === 'ja');
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+}
+// Default: browser language (Japanese browsers see Japanese)
+setLang((navigator.language || '').toLowerCase().startsWith('ja') ? 'ja' : 'en');
+
 function copyCmd() {
   const text = document.getElementById('install-cmd').textContent;
   navigator.clipboard.writeText(text).then(() => {
     const btn = document.querySelector('.copy-btn');
-    btn.textContent = 'コピーしました ✓';
-    setTimeout(() => { btn.textContent = 'コピー'; }, 2000);
+    const prev = btn.innerHTML;
+    btn.textContent = document.documentElement.getAttribute('data-lang') === 'ja' ? 'コピーしました ✓' : 'Copied ✓';
+    setTimeout(() => { btn.innerHTML = prev; }, 2000);
   });
 }
 </script>

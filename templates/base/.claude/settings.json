@@ -12,7 +12,7 @@
       "Read(./.env)",
       "Read(./.env.*)",
       "Read(./secrets/**)",
-      "Read(./**/*.sample.md)",
+      "Read(./**/*.sample.*)",
       "Bash(rm -rf *)",
       "Bash(git push --force *)"
     ]

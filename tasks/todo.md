@@ -43,7 +43,7 @@ repo root (ClaudeCodeAutoSetup)/
       - コンセプト / 一行インストールコマンド / 6タイプ紹介 / 学習ロードマップ3層 / GitHubリンク
 - [x] 5. README.md 書き直し + CHANGELOG.md v1.0.0
 - [x] 6. 検証 — sandbox で setup.sh を全6タイプ実行、生成結果を確認
-- [x] 7. git commit & push → GitHub Pages 有効化の手順案内
+- [x] 7. git commit + tag v1.0.0(push はローカルで実行が必要 → 下記 Review 参照)
 
 ## Review
 
@@ -56,5 +56,8 @@ repo root (ClaudeCodeAutoSetup)/
 - 公式ドキュメント照合による設計修正2点:
   1. `ignorePatterns` は廃止 → `permissions.deny` の `Read(...)` ルールを採用
   2. プロジェクト共有 MCP は settings.json ではなく `.mcp.json`(ルート)に配置
-- 残タスク: GitHub Pages 有効化(Settings → Pages → main /docs)、
-  code.jp.ai ドメインの割り当て
+- 残タスク(人間側の作業):
+  1. `cd ~/Claude/code && git push origin main --tags`
+     (Cowork のサンドボックスは SSH 接続不可のため。commit と tag v1.0.0 は済み)
+  2. GitHub Pages 有効化: リポジトリ Settings → Pages → Branch: main / フォルダ: /docs
+  3. code.jp.ai ドメインを GitHub Pages に割り当て(Custom domain)
