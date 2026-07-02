@@ -45,6 +45,20 @@ repo root (ClaudeCodeAutoSetup)/
 - [x] 6. 検証 — sandbox で setup.sh を全6タイプ実行、生成結果を確認
 - [x] 7. git commit + tag v1.0.0(push はローカルで実行が必要 → 下記 Review 参照)
 
+## v1.1.0 二言語対応 (2026-07-03)
+
+- [x] 既存テンプレートを `X.ja.md` / `X.ja.sample.md` にリネーム
+- [x] 全ファイルの英語版 `X.en.md` / `X.en.sample.md` を追加(約35ファイル)
+- [x] setup.sh: 言語選択(対話 + 第3引数 ja|en)・UIメッセージ二言語化・言語解決ロジック
+- [x] Homepage: 日本語/EN 切り替え(ブラウザ言語で自動判定)
+- [x] README.md 英語化 + README.ja.md 追加、CHANGELOG 1.1.0
+- [x] 検証: 6タイプ × 2言語 = 12通り生成テスト全通過
+
+設計ルール(今後の追加時も厳守):
+- Claude が読むファイル → `X.ja.md`/`X.en.md` で管理、生成時に1言語だけ `X.md` に解決
+- 人間が読む解説 → `X.ja.sample.md`/`X.en.sample.md` を両方配置(並存)
+- sample 除外は `Read(./**/*.sample.*)`
+
 ## Review
 
 **2026-07-02 完了 (v1.0.0)**
