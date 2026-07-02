@@ -1,0 +1,21 @@
+# Dependencies
+node_modules/
+__pycache__/
+.venv/
+
+# Build outputs
+dist/
+build/
+*.log
+
+# Secrets — never commit these
+.env
+.env.*
+secrets/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Claude Code local (personal) settings
+.claude/settings.local.json

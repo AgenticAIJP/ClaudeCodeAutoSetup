@@ -1,0 +1,21 @@
+# prompts/ とは何か(人間向け解説)
+
+隣の refactor.txt は「よく使う指示のテンプレート」です。
+
+## commands/ との違い
+
+- .claude/commands/refactor.md → 「/refactor」としてClaude Code に登録される
+- .claude/prompts/refactor.txt → コピペ用の素材。チャットに貼って使う
+
+頻繁に使うなら commands/ へ。たまに使う・微調整して使うなら prompts/ へ。
+
+## 使い方
+
+1. refactor.txt の内容をコピー
+2. 末尾の「Target:」に対象ファイルや関数名を書き足す
+3. Claude Code のチャットに貼り付ける
+
+## 効果
+
+毎回ゼロから指示を書くと、制約(テスト先行・小さいステップ等)を
+書き忘れて雑なリファクタリングになりがち。テンプレートなら品質が安定します。

@@ -1,0 +1,9 @@
+Write tests for the following code.
+
+Constraints:
+- Cover: happy path, edge cases, and error handling
+- One behavior per test case, descriptive test names
+- Do not modify the code under test; if it is untestable, report why and propose a refactor instead
+- Place tests under tests/ mirroring the source structure
+
+Target:

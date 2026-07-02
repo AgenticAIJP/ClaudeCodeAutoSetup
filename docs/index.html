@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ClaudeCodeAutoSetup — Claude Code プロジェクトを一発生成</title>
+<meta name="description" content="Claude Code の最適なプロジェクト構造を、コマンド一発で生成。各ファイルの隣に解説付き。迷わない、シンプル、クリーン。">
+<style>
+  :root {
+    --bg: #0f1117;
+    --bg-card: #171a23;
+    --bg-code: #0a0c10;
+    --text: #e6e8ee;
+    --text-dim: #9aa0b0;
+    --accent: #d97757;
+    --accent-soft: #e8a288;
+    --border: #262b38;
+    --green: #6bbf8a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Hiragino Sans", "Yu Gothic UI", "Noto Sans JP", sans-serif;
+    line-height: 1.8;
+  }
+  .container { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+  code, pre { font-family: "SF Mono", Menlo, Consolas, monospace; }
+
+  /* Hero */
+  .hero { text-align: center; padding: 88px 0 56px; }
+  .hero .logo { font-size: 15px; letter-spacing: 3px; color: var(--accent); font-weight: 700; }
+  .hero h1 { font-size: 40px; font-weight: 800; margin: 16px 0 8px; line-height: 1.4; }
+  .hero h1 .em { color: var(--accent); }
+  .hero .tagline { color: var(--text-dim); font-size: 17px; margin-bottom: 36px; }
+  .hero .badges { margin-top: 28px; font-size: 13px; color: var(--text-dim); }
+  .hero .badges span { margin: 0 8px; }
+
+  /* Install box */
+  .install {
+    background: var(--bg-code);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    text-align: left;
+    position: relative;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .install .label { font-size: 12px; color: var(--text-dim); margin-bottom: 8px; }
+  .install pre { color: var(--green); font-size: 14px; overflow-x: auto; white-space: pre-wrap; word-break: break-all; }
+  .copy-btn {
+    position: absolute; top: 16px; right: 16px;
+    background: var(--bg-card); color: var(--text-dim);
+    border: 1px solid var(--border); border-radius: 8px;
+    padding: 6px 14px; font-size: 12px; cursor: pointer;
+  }
+  .copy-btn:hover { color: var(--text); border-color: var(--accent); }
+
+  /* Sections */
+  section { padding: 56px 0; border-top: 1px solid var(--border); }
+  h2 { font-size: 26px; font-weight: 800; margin-bottom: 8px; }
+  .section-lead { color: var(--text-dim); margin-bottom: 32px; }
+
+  /* Steps */
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .step { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 22px; }
+  .step .num { color: var(--accent); font-weight: 800; font-size: 13px; }
+  .step h3 { font-size: 16px; margin: 6px 0; }
+  .step p { font-size: 13.5px; color: var(--text-dim); }
+
+  /* Type cards */
+  .types { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .type { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+  .type .icon { font-size: 22px; }
+  .type h3 { font-size: 15.5px; margin: 8px 0 4px; }
+  .type p { font-size: 13px; color: var(--text-dim); }
+  .type code { font-size: 11.5px; color: var(--accent-soft); }
+
+  /* Sample philosophy */
+  .pair {
+    background: var(--bg-code); border: 1px solid var(--border);
+    border-radius: 12px; padding: 22px 26px; font-size: 14px;
+    overflow-x: auto;
+  }
+  .pair .c-claude { color: var(--green); }
+  .pair .c-human { color: var(--accent-soft); }
+  .pair .c-dim { color: var(--text-dim); }
+  .ba { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 24px; }
+  .ba .box { border-radius: 12px; padding: 20px; font-size: 13.5px; }
+  .ba .good { background: rgba(107,191,138,.08); border: 1px solid rgba(107,191,138,.35); }
+  .ba .bad  { background: rgba(217,119,87,.07); border: 1px solid rgba(217,119,87,.3); }
+  .ba h4 { font-size: 14px; margin-bottom: 8px; }
+  .ba p { color: var(--text-dim); }
+
+  /* Roadmap */
+  .level { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 22px 26px; margin-bottom: 16px; }
+  .level .tag { display: inline-block; background: var(--accent); color: #fff; font-size: 12px; font-weight: 700; border-radius: 6px; padding: 2px 10px; margin-bottom: 8px; }
+  .level h3 { font-size: 17px; margin-bottom: 4px; }
+  .level .time { font-size: 12.5px; color: var(--text-dim); margin-bottom: 10px; }
+  .level ul { list-style: none; }
+  .level li { font-size: 14px; color: var(--text-dim); padding-left: 1.2em; position: relative; }
+  .level li::before { content: "·"; color: var(--accent); position: absolute; left: 0; font-weight: 800; }
+
+  /* Resources */
+  .res a { color: var(--accent-soft); text-decoration: none; }
+  .res a:hover { text-decoration: underline; }
+  .res li { margin-bottom: 8px; font-size: 14.5px; list-style: none; }
+
+  /* Footer */
+  footer { border-top: 1px solid var(--border); padding: 40px 0 56px; text-align: center; color: var(--text-dim); font-size: 13px; }
+  footer a { color: var(--accent-soft); text-decoration: none; }
+  .gh-btn {
+    display: inline-block; margin-top: 4px;
+    background: var(--accent); color: #fff; font-weight: 700;
+    border-radius: 10px; padding: 12px 28px; text-decoration: none; font-size: 15px;
+  }
+  .gh-btn:hover { background: var(--accent-soft); }
+
+  @media (max-width: 720px) {
+    .steps, .types, .ba { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 30px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero container">
+  <div class="logo">CODE.JP.AI</div>
+  <h1>Claude Code プロジェクトを<br><span class="em">コマンド一発</span>で正しく始める</h1>
+  <p class="tagline">迷わない。シンプル。クリーン。<br>最適なディレクトリ構造と設定ファイル一式を、解説付きで自動生成します。</p>
+
+  <div class="install">
+    <div class="label">ターミナルに貼り付けるだけ:</div>
+    <pre id="install-cmd">curl -fsSL https://raw.githubusercontent.com/AgenticAIJP/ClaudeCodeAutoSetup/main/setup.sh | bash</pre>
+    <button class="copy-btn" onclick="copyCmd()">コピー</button>
+  </div>
+
+  <div class="badges">
+    <span>✅ 完全オープンソース (MIT)</span>
+    <span>💰 非営利・広告なし</span>
+    <span>📦 v1.0.0</span>
+  </div>
+</header>
+
+<section>
+  <div class="container">
+    <h2>使い方は3ステップ</h2>
+    <p class="section-lead">Node.js も npm も不要。bash と curl があれば動きます。</p>
+    <div class="steps">
+      <div class="step">
+        <div class="num">STEP 1</div>
+        <h3>コマンドを実行</h3>
+        <p>上のコマンドをターミナルに貼り付けて Enter。</p>
+      </div>
+      <div class="step">
+        <div class="num">STEP 2</div>
+        <h3>タイプと名前を選ぶ</h3>
+        <p>6種類から番号を選んで、プロジェクト名を入力するだけ。</p>
+      </div>
+      <div class="step">
+        <div class="num">STEP 3</div>
+        <h3>claude を起動</h3>
+        <p>CLAUDE.md の TODO を3箇所埋めたら、もう開発を始められます。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2>6つのプロジェクトタイプ</h2>
+    <p class="section-lead">用途に合わせて、最適な構造とルールが生成されます。</p>
+    <div class="types">
+      <div class="type"><div class="icon">🧱</div><h3>汎用ベース</h3><p>まずはこれ。最小のきれいな骨格。</p><code>src/ tests/ docs/ tasks/</code></div>
+      <div class="type"><div class="icon">🌐</div><h3>Webアプリ型</h3><p>前後端分離。API境界のルール付き。</p><code>frontend/ backend/</code></div>
+      <div class="type"><div class="icon">🔌</div><h3>APIサービス型</h3><p>仕様書の自動更新ルールが特徴。</p><code>routes/ services/ models/</code></div>
+      <div class="type"><div class="icon">⌨️</div><h3>CLIツール型</h3><p>stdout/stderr 分離・終了コード規約。</p><code>commands/ handlers/</code></div>
+      <div class="type"><div class="icon">🤖</div><h3>AI Agent型</h3><p>MCP設定例つき。1エージェント1責務。</p><code>agents/ skills/ tools/</code></div>
+      <div class="type"><div class="icon">📚</div><h3>ドキュメント型</h3><p>学習サイト・技術ブログ。記事雛形つき。</p><code>docs/ examples/ templates/</code></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2>設計哲学: 困った場所の隣に、答えがある</h2>
+    <p class="section-lead">すべての設定ファイルの隣に <code>*.sample.md</code>(人間向け解説)がペアで置かれます。README を探し回る時間はゼロ。</p>
+    <div class="pair">
+<pre><span class="c-dim">.claude/rules/</span>
+<span class="c-claude">├── architecture.md          ← Claude が読む(ルール本体)</span>
+<span class="c-human">└── architecture.sample.md   ← あなたが読む(なぜ・使い方・効果)</span></pre>
+    </div>
+    <div class="ba">
+      <div class="box good">
+        <h4>✅ ルールを書いた場合</h4>
+        <p>Claude はビジネスロジックを core 層に置き、アーキテクチャを守る。仕様書も同じ変更で更新される。</p>
+      </div>
+      <div class="box bad">
+        <h4>❌ 書かなかった場合</h4>
+        <p>Claude は最短経路でコードを書く。3回の機能追加で main が500行になり、構造が崩壊する。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2>学習ロードマップ</h2>
+    <p class="section-lead">自分のレベルを選んで、そこから始めてください。</p>
+
+    <div class="level">
+      <span class="tag">Level 1</span>
+      <h3>概念理解 — 読むだけ</h3>
+      <div class="time">⏱ 約30分</div>
+      <ul>
+        <li>Claude Code とは何か / 通常の Claude との違い</li>
+        <li>CLAUDE.md の役割と書き方の基本</li>
+        <li>プロジェクト構造がなぜ重要か(Before / After)</li>
+        <li><code>/init</code> コマンドで CLAUDE.md を自動生成する方法</li>
+      </ul>
+    </div>
+
+    <div class="level">
+      <span class="tag">Level 2</span>
+      <h3>実戦設定 — 手を動かす</h3>
+      <div class="time">⏱ 1〜2時間</div>
+      <ul>
+        <li>settings.json(permissions / hooks)の設定</li>
+        <li>カスタムスラッシュコマンドの作り方(.claude/commands/)</li>
+        <li>Hooks の設定(PreToolUse / PostToolUse / Stop)</li>
+        <li>CLAUDE.md の三層階層(グローバル / プロジェクト / サブディレクトリ)</li>
+      </ul>
+    </div>
+
+    <div class="level">
+      <span class="tag">Level 3</span>
+      <h3>高度な活用 — 本番レベル</h3>
+      <div class="time">⏱ チーム・本番運用</div>
+      <ul>
+        <li>MCP サーバーの接続(GitHub / DB / Slack)</li>
+        <li>Multi-agent 協調(Claude が Claude を呼び出す)</li>
+        <li>大規模プロジェクトでのコンテキスト管理戦略</li>
+        <li>カスタム MCP サーバーの自作</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container res">
+    <h2>公式学習リソース</h2>
+    <p class="section-lead">このサイトの役割は「どこから学ぶか迷わせない」こと。詳細は公式へ。</p>
+    <ul>
+      <li>📖 <a href="https://code.claude.com/docs/ja/overview" target="_blank" rel="noopener">Claude Code 公式ドキュメント(日本語)</a> — コマンド・設定リファレンス</li>
+      <li>🎓 <a href="https://anthropic.skilljar.com/" target="_blank" rel="noopener">Anthropic 公式コース</a> — Claude Code の体系的な学習</li>
+      <li>🛠 <a href="https://github.com/AgenticAIJP/ClaudeCodeAutoSetup" target="_blank" rel="noopener">GitHub — ClaudeCodeAutoSetup</a> — 本プロジェクトのテンプレート & CHANGELOG</li>
+    </ul>
+    <p style="margin-top:28px; text-align:center;">
+      <a class="gh-btn" href="https://github.com/AgenticAIJP/ClaudeCodeAutoSetup" target="_blank" rel="noopener">GitHub で見る →</a>
+    </p>
+  </div>
+</section>
+
+<footer>
+  <p>「自分が必要だから作る。作ったものがみんなの役に立つ。」</p>
+  <p style="margin-top:8px;">MIT License · <a href="https://github.com/AgenticAIJP/ClaudeCodeAutoSetup">AgenticAIJP/ClaudeCodeAutoSetup</a> · 非営利・寄付も受け付けていません</p>
+</footer>
+
+<script>
+function copyCmd() {
+  const text = document.getElementById('install-cmd').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = 'コピーしました ✓';
+    setTimeout(() => { btn.textContent = 'コピー'; }, 2000);
+  });
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,9 @@
+Refactor the following code.
+
+Constraints:
+- Preserve existing behavior exactly (write characterization tests first if none exist)
+- Follow .claude/rules/architecture.md and .claude/rules/style.md
+- Change in small steps, run tests after each step
+- Report: what changed, why, and the before/after diff
+
+Target:
